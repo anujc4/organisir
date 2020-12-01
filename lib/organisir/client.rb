@@ -9,7 +9,7 @@ module Organisir
 
       @verbose = !commit
       @pwd = pwd
-      @file_op = FileOp.new(Dir.pwd)
+      @file_op = FileOp.new(pwd, source_dir)
       execute_start
     end
 
@@ -17,7 +17,7 @@ module Organisir
       @abs_source_dir = File.join(pwd, source_dir)
       @verbose = !commit
       @pwd = pwd
-      @file_op = FileOp.new(Dir.pwd)
+      @file_op = FileOp.new(pwd, source_dir)
 
       execute_symlink
     end
@@ -38,6 +38,7 @@ module Organisir
 
         move_file(f, match_dir)
       end
+      print "Process completed\n"
     end
 
     def execute_symlink
@@ -53,17 +54,18 @@ module Organisir
 
         symlink_file(f, match_dirs)
       end
+      print "Process completed\n"
     end
 
     def move_file(filename, dirname)
-      print "Rule matched file #{filename.to_s.colorize(:red)} to be moved directory #{dirname.to_s.colorize(:red)}\n"
+      print "Rule matched file #{filename.to_s.colorize(:red)} moved to directory #{dirname.to_s.colorize(:red)}\n"
       return if @verbose
 
       @file_op.move(filename, @abs_source_dir, File.join(@abs_dest_dir, dirname))
     end
 
     def symlink_file(file, match_dirs)
-      print "Rule matched file #{file.to_s.colorize(:red)} to be symlinked to directories #{match_dirs.join(", ").to_s.colorize(:red)}\n"
+      print "Rule matched file #{file.to_s.colorize(:red)} symlinked to directories #{match_dirs.join(", ").to_s.colorize(:red)}\n"
       return if @verbose
 
       @file_op.symlink(file, match_dirs)

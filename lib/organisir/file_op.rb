@@ -4,25 +4,28 @@ require "fileutils"
 
 module Organisir
   class FileOp
-    def initialize(root_dir)
+    def initialize(root_dir, source_dir)
       @root_dir = root_dir
+      @source_dir = source_dir
     end
 
     def move(filename, source_path, destination_path)
       src = File.join(source_path, filename)
       dest = File.join(destination_path, filename)
-      # print "mv#{false ? ' -f' : ''} #{[src,dest].flatten.join ' '}\n".colorize(:green)
       FileUtils.move(src, dest, force: false, verbose: false)
     end
 
     def symlink(src_file, destination_dirs)
-      filename = src_file.split("/").last
+      filename = File.basename(src_file)
       destns = destination_dirs.map do |p|
-        File.join(@root_dir, p, filename)
+        File.join(@root_dir, @source_dir, p, filename)
       end
-
       destns.each do |d|
-        FileUtils.symlink(src_file, d, force: false, verbose: true)
+        begin
+          FileUtils.ln_s(src_file,d , force: false, verbose: false)
+        rescue Errno::EEXIST
+          nil
+        end
       end
     end
 
