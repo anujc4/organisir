@@ -26,7 +26,7 @@ module Organisir
       say "Exiting organisir...", :green
     end
 
-    desc "symlink source", "Symlink files in nested directories to matching sub-directories within the given directory"
+    desc "symlink source destination[optional]", "Symlink files in nested directories to matching sub-directories within the given directory"
     option :source, aliases: :s, required: true, type: :string
     option :commit, type: :boolean, default: false
     def symlink
@@ -37,6 +37,24 @@ module Organisir
         say "symlink command always runs in non-commit mode. Use --commit true to symlink files.", :red
       end
       Organisir::Commands::SymlinkFiles.new(options[:source], Dir.pwd, options[:commit]).link
+      say "Process completed"
+    rescue Interrupt
+      say "Exiting organisir...", :green
+    end
+
+    desc "multi_symlink source destination",
+         "Symlink files present in a source directory to matching sub-directories within the given destination directory"
+    option :source, aliases: :s, required: true, type: :string
+    option :destination, aliases: :d, required: true, type: :string
+    option :commit, type: :boolean, default: false
+    def multi_symlink
+      if options[:commit]
+        say "Preparing to symlink files in 5 seconds. Cancel the command by pressing Ctrl-C"
+        sleep(5)
+      else
+        say "multi_symlink command always runs in non-commit mode. Use --commit true to symlink files.", :red
+      end
+      Organisir::Commands::MultiSymlinkFiles.new(options[:source], options[:destination], Dir.pwd, options[:commit]).link
       say "Process completed"
     rescue Interrupt
       say "Exiting organisir...", :green

@@ -12,6 +12,7 @@ end
 require "organisir/cli"
 require "organisir/commands/clean_symlinks"
 require "organisir/commands/move_files"
+require "organisir/commands/multi_symlink_files"
 require "organisir/commands/symlink_files"
 require "organisir/rule"
 require "organisir/symlink_rule"

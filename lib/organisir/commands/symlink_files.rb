@@ -26,7 +26,7 @@ module Organisir
       private
 
       def process(src_file, destination_dirs)
-        print "Rule matched file #{src_file.to_s.colorize(:red)} symlinked to directorie(s) #{destination_dirs.join(", ").to_s.colorize(:red)}\n"
+        print "Rule matched file #{src_file.to_s.colorize(:red)} symlinked to directory(s) #{destination_dirs.join(", ").to_s.colorize(:red)}\n"
         return if @verbose
 
         destination_dirs.each do |d|

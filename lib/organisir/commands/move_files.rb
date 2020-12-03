@@ -21,8 +21,8 @@ module Organisir
 
         rule = Rule.new(sub_dirs)
         src_files.each do |f|
-          match_dir = rule.match(f)
-          next if match_dir.nil?
+          match_dir = rule.match(f).try(:min)
+          next if match_dir.nil? || match_dir.empty?
 
           process(f, match_dir)
         end
