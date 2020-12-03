@@ -76,5 +76,10 @@ module Organisir
     rescue Interrupt
       say "Exiting organisir...", :green
     end
+
+    desc "version", ""
+    def version
+      print "v#{Organisir::VERSION}"
+    end
   end
 end
